@@ -1,0 +1,6 @@
+# Inference configuration
+checkpoint_path: "./outputs/checkpoints/best_model.pth"
+device: "auto"  # auto = cuda if available, else cpu
+sw_batch_size: 4
+overlap: 0.5
+output_dir: "./outputs/predictions"

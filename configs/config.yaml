@@ -1,0 +1,52 @@
+# CardioQuant3D – Main Configuration
+# Orchestrates all sub-configs via Hydra
+
+defaults:
+  - model: model
+  - training: training
+  - inference: inference
+  - _self_
+
+data:
+  root_dir: "./database"
+  train_dir: "${data.root_dir}/training"
+  test_dir: "${data.root_dir}/testing"
+  label_map:
+    background: 0
+    rv: 1
+    myo: 2
+    lv: 3
+  target_label: 3  # LV only
+  spatial_size: [128, 128, 32]
+  pixel_spacing: [1.5, 1.5, 3.0]   # Resampling target spacing (mm)
+  orientation: "RAS"                 # Anatomical orientation code
+  cache_rate: 1.0                    # 1.0 = cache all in RAM (faster)
+  num_workers: 4                     # Windows: lower is better
+
+preprocessing:
+  intensity_lower_percentile: 0.5
+  intensity_upper_percentile: 99.5
+  intensity_output_min: 0.0
+  intensity_output_max: 1.0
+
+augmentation:
+  flip_prob: 0.5
+  rotate90_prob: 0.5
+  affine_prob: 0.3
+  affine_rotate_range: [0.1, 0.1, 0.1]
+  affine_scale_range: [0.1, 0.1, 0.1]
+  gaussian_noise_prob: 0.2
+  gaussian_noise_std: 0.05
+  gaussian_smooth_prob: 0.2
+  gaussian_smooth_sigma_range: [0.5, 1.0]
+  intensity_scale_prob: 0.3
+  intensity_scale_factors: 0.1
+  intensity_shift_prob: 0.3
+  intensity_shift_offsets: 0.1
+
+experiment:
+  name: "cardioquant3d"
+  seed: 42
+  deterministic: true
+  output_dir: "./outputs"
+  mlflow_tracking_uri: "file:./mlruns"

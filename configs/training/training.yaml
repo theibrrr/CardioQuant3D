@@ -1,0 +1,33 @@
+# Training configuration
+epochs: 100
+batch_size: 4
+learning_rate: 1.0e-3
+weight_decay: 1.0e-5
+optimizer: "adamw"
+scheduler: "cosine"
+scheduler_eta_min: 1.0e-7
+warmup_epochs: 10
+
+amp: true
+gradient_clip_max_norm: 1.0
+
+loss:
+  lambda_dice: 1.0
+  lambda_ce: 1.0
+  include_background: false
+  softmax: true
+
+early_stopping:
+  enabled: true
+  patience: 30
+  min_delta: 0.001
+  monitor: "val_dice"
+
+checkpointing:
+  enabled: true
+  save_top_k: 3
+  monitor: "val_dice"
+  mode: "max"
+
+val_split: 0.2
+val_interval: 2

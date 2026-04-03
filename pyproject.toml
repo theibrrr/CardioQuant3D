@@ -1,0 +1,89 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cardioquant3d"
+version = "1.0.0"
+description = "3D Cardiac Segmentation and Geometric Quantification Pipeline"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.11"
+authors = [
+    {name = "CardioQuant3D Team"},
+]
+keywords = ["cardiac", "segmentation", "3d-unet", "mri", "medical-imaging", "monai"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Healthcare Industry",
+    "Topic :: Scientific/Engineering :: Medical Science Apps.",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Programming Language :: Python :: 3.11",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+dependencies = [
+    "torch",
+    "monai[all]",
+    "numpy",
+    "scipy",
+    "scikit-image",
+    "scikit-learn",
+    "nibabel",
+    "SimpleITK",
+    "trimesh",
+    "fastapi",
+    "uvicorn[standard]",
+    "pydantic>=2.0",
+    "hydra-core",
+    "omegaconf",
+    "rich",
+    "mlflow",
+    "python-multipart",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-cov",
+    "black",
+    "isort",
+    "flake8",
+    "mypy",
+    "pre-commit",
+    "httpx",
+]
+
+[project.urls]
+Homepage = "https://github.com/cardioquant3d/cardioquant3d"
+Documentation = "https://github.com/cardioquant3d/cardioquant3d#readme"
+Repository = "https://github.com/cardioquant3d/cardioquant3d"
+Issues = "https://github.com/cardioquant3d/cardioquant3d/issues"
+
+[tool.setuptools.packages.find]
+include = ["cardioquant3d*"]
+
+[tool.black]
+line-length = 120
+target-version = ["py311"]
+
+[tool.isort]
+profile = "black"
+line_length = 120
+known_first_party = ["cardioquant3d"]
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+ignore_missing_imports = true
+disallow_untyped_defs = false
+check_untyped_defs = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"

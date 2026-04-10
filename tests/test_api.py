@@ -24,6 +24,17 @@ class TestHealthEndpoint:
         data = response.json()
         assert data["status"] == "ok"
 
+    def test_health_response_schema(self, client: TestClient) -> None:
+        """Health endpoint returns the expected response schema."""
+        response = client.get("/health")
+        assert response.status_code == 200
+
+        data = response.json()
+        assert set(data.keys()) == {"status", "model_loaded"}
+        assert len(data) == 2
+        assert isinstance(data["status"], str)
+        assert isinstance(data["model_loaded"], bool)
+
 
 class TestAnalyzeEndpoint:
     """Tests for the /analyze endpoint."""

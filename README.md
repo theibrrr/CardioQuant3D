@@ -16,7 +16,7 @@
 
 ## About This Project
 
-CardioQuant3D demonstrates production-grade medical imaging AI engineering — from raw 3D cardiac MRI data through deep learning segmentation, geometric analysis, and clinical deployment. The pipeline integrates modern MLOps practices (MLflow, Hydra, Docker, CI/CD) with rigorous evaluation methodology including both segmentation accuracy metrics (Dice, Hausdorff) and clinically meaningful geometric error quantification (volume, surface area, long-axis, sphericity). Designed for reproducibility, modularity, and real-world deployment in regulated medtech environments.
+CardioQuant3D is a 3D cardiac MRI segmentation and geometric quantification project designed with production practices in mind. The pipeline combines model training, geometric analysis, and deployment workflows with MLflow, Hydra, Docker, testing, and linting. It emphasizes reproducibility, modularity, and clear evaluation using both segmentation metrics (Dice, Hausdorff) and clinically meaningful geometric measurements (volume, surface area, long-axis, sphericity).
 
 ---
 
@@ -336,12 +336,26 @@ Open **http://localhost:8000** for the interactive upload page.
 | Method | Path | Description |
 |--------|------|-------------|
 | `GET` | `/` | Upload page — drag & drop a NIfTI file for visual analysis |
-| `GET` | `/health` | Health check (returns `{"status": "healthy"}`) |
+| `GET` | `/health` | Health check (returns service status and whether the model is loaded) |
 | `POST` | `/analyze` | JSON API — returns clinical metrics as JSON |
 | `POST` | `/visualize` | HTML report — MRI slices with LV overlay + metric cards |
 | `GET` | `/compare` | Two-file upload page (MRI + ground truth mask) |
 | `POST` | `/compare` | HTML report — prediction vs ground truth overlay with Dice score |
 | `GET` | `/docs` | Swagger UI (auto-generated) |
+
+**Health check response fields:**
+
+- `status`: service health
+- `model_loaded`: whether the model has been loaded by the API
+
+**Health check example:**
+
+```json
+{
+  "status": "ok",
+  "model_loaded": true
+}
+```
 
 **JSON API example:**
 
@@ -373,7 +387,7 @@ docker build -t cardioquant3d:latest .
 # Run container
 docker run -p 8000:8000 \
     -v ./outputs:/app/outputs \
-    -e CARDIOQUANT3D_CHECKPOINT=/app/outputs/best_model.pth \
+    -e CARDIOQUANT3D_CHECKPOINT=/app/outputs/checkpoints/best_model.pth \
     cardioquant3d:latest
 
 # Test
@@ -553,9 +567,11 @@ CardioQuant3D/
 │   ├── evaluate.py
 │   └── infer.py
 ├── tests/                    # Unit tests (pytest)
-├── .github/workflows/ci.yml  # GitHub Actions CI
+├── CHANGELOG.md
+├── CONTRIBUTING.md
 ├── Dockerfile
 ├── Makefile
+├── .pre-commit-config.yaml
 ├── environment.yaml
 ├── requirements.txt
 ├── pyproject.toml
@@ -598,7 +614,7 @@ Dataset download: [https://www.creatis.insa-lyon.fr/Challenge/acdc/](https://www
 | **Metrics** | Compute Ejection Fraction (EF) from ED/ES volume pairs | Most common clinical metric in cardiology |
 | **Deployment** | Add ONNX export + TensorRT optimization | 5–10× faster inference on GPU |
 | **API** | WebSocket-based progress for large files; batch upload support | Better UX for clinical workflows |
-| **CI/CD** | Add model regression tests — Dice on a held-out set must not drop | Prevent silent model degradation |
+| **Quality** | Add model regression tests — Dice on a held-out set must not drop | Prevent silent model degradation |
 | **Visualization** | 3D mesh rendering (VTK / PyVista) in the web UI | Interactive 3D exploration of the segmentation |
 
 ---

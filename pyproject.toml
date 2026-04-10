@@ -57,10 +57,10 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/cardioquant3d/cardioquant3d"
-Documentation = "https://github.com/cardioquant3d/cardioquant3d#readme"
-Repository = "https://github.com/cardioquant3d/cardioquant3d"
-Issues = "https://github.com/cardioquant3d/cardioquant3d/issues"
+Homepage = "https://github.com/theibrrr/CardioQuant3D"
+Documentation = "https://github.com/theibrrr/CardioQuant3D"
+Repository = "https://github.com/theibrrr/CardioQuant3D"
+Issues = "https://github.com/theibrrr/CardioQuant3D"
 
 [tool.setuptools.packages.find]
 include = ["cardioquant3d*"]

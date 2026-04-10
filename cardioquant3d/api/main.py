@@ -171,7 +171,7 @@ def get_predictor() -> Predictor:
 
     checkpoint_path = os.environ.get(
         "CARDIOQUANT3D_CHECKPOINT",
-        "./outputs/best_model.pth",
+        "./outputs/checkpoints/best_model.pth",
     )
 
     if not Path(checkpoint_path).exists():
